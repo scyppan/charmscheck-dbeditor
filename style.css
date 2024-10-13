@@ -37,7 +37,7 @@
 
 .container {
     display: flex;
-    width: 100%;
+    width: 100% !important;
     margin: 0 auto;
     flex-direction: row;
     /* Add this line */
@@ -46,7 +46,6 @@
 
 /* Left Panel Styling */
 .left-panel {
-    width: 30%;
     background-color: #7d6f48;
     color: #FFFFFF;
     font-weight: bold;
@@ -184,4 +183,9 @@
 
 .window-content form .frm_form_field {
     margin-bottom: 10px;
+}
+
+/* Override max-width for all forms using the specific class */
+.frm_forms.frm_style_formidable-style.with_frm_style {
+    max-width: none !important; /* Remove the max-width restriction */
 }
