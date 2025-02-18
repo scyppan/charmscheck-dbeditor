@@ -105,6 +105,10 @@ function fetchDataForMiniWindow(id, windowContent, miniWindow) {
             apiUrl = '/wp-json/frm/v2/forms/1042/entries?page_size=10000';
             editPageUrl = 'https://charmscheck.com/add-named-plant/?frm_action=edit&entry=';
             break;
+        case 'mini-window-edit-general-items':
+            apiUrl = '/wp-json/frm/v2/forms/4359/entries?page_size=10000';
+            editPageUrl = 'https://charmscheck.com/add-general-items/?frm_action=edit&entry=';
+            break;
         default:
             windowContent.innerHTML = '<p>Invalid mini-window ID.</p>';
             return;

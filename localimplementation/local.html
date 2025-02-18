@@ -1,0 +1,50 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Charms Check DB Editor (Local)</title>
+  <link rel="stylesheet" href="style.css">
+
+  <script src="0apicalls\api.js" defer></script>
+  <script src="1htmlmanagement\eventlisteners.js" defer></script>
+  <script src="1htmlmanagement\elementcreator.js" defer></script>
+  <script src="1htmlmanagement\windowmanager.js" defer></script>
+  <script src="1htmlmanagement\windowcreator.js" defer></script>
+  <script src="1htmlmanagement\initializers.js" defer></script>
+
+  <script src="globalvars.js" defer></script>
+  <script src="main.js" defer></script>
+
+  <h3>Charms Check DB Editor (Local)</h3>
+</head>
+<body>
+  <!-- Main Container -->
+  <div class="container" id="maineditorui">
+    <!-- Left Panel (Menu items will be generated dynamically) -->
+    <div class="left-panel"></div>
+    <!-- Right Panel (Main windows will be appended here dynamically) -->
+    <div class="right-panel"></div>
+  </div>
+
+  <!-- Template for Main Windows -->
+  <template id="main-window-template">
+    <div class="main-window custom-panel hidden">
+      <div class="custom-window-header"></div>
+      <div class="custom-menu-bar"></div>
+      <div class="mini-windows"></div>
+    </div>
+  </template>
+
+  <!-- Template for Mini Windows -->
+  <template id="mini-window-template">
+    <div class="mini-window custom-panel hidden">
+      <div class="mini-window-header">
+        <span class="mini-window-title"></span>
+        <button class="refresh-button">Refresh</button>
+      </div>
+      <div class="window-content"></div>
+    </div>
+  </template>
+</body>
+</html>

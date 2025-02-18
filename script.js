@@ -1,5 +1,20 @@
-// Function definitions moved outside the DOMContentLoaded event listener
+function refreshMiniWindow(id) {
+    var miniWindow = document.getElementById(id);
+    if (miniWindow) {
+        // Reload the content
+        var windowContent = miniWindow.querySelector('.window-content');
+        windowContent.innerHTML = '<p>Loading...</p>';
+        // Remove the 'data-content-loaded' attribute to force reload
+        miniWindow.removeAttribute('data-content-loaded');
+        // Reload content
+        loadMiniWindowContent(id);
+    }
+}
 
+
+// mainWindowController.js
+
+// Function to show a specific main window by ID
 function showMainWindow(id) {
     var mainWindows = document.querySelectorAll('.main-window');
     mainWindows.forEach(function(window) {
@@ -13,6 +28,7 @@ function showMainWindow(id) {
     hideAllMiniWindows();
 }
 
+// Function to hide all mini-windows
 function hideAllMiniWindows() {
     var miniWindows = document.querySelectorAll('.mini-window');
     miniWindows.forEach(function(window) {
@@ -22,34 +38,9 @@ function hideAllMiniWindows() {
     });
 }
 
-function loadMiniWindowContent(id, offset = 0) {
-    // Hide all mini-windows
-    hideAllMiniWindows();
+// contentLoader.js
 
-    // Show the target mini-window
-    var miniWindow = document.getElementById(id);
-    if (miniWindow) {
-        miniWindow.classList.remove('hidden');
-        var windowContent = miniWindow.querySelector('.window-content');
-        if (offset === 0) {
-            windowContent.innerHTML = '<p>Loading...</p>';
-        }
-
-        // Check if content is already loaded
-        if (!miniWindow.getAttribute('data-content-loaded')) {
-            // Determine if this is an "Edit" mini-window
-            if (id.startsWith('mini-window-edit-')) {
-                // Fetch data from the API
-                fetchDataForMiniWindow(id, windowContent, miniWindow);
-            } else {
-                // Load content via AJAX (original functionality)
-                loadContentViaAjax(id, windowContent, offset);
-            }
-            miniWindow.setAttribute('data-content-loaded', 'true');
-        }
-    }
-}
-
+// Function to load content into a mini-window via AJAX, with optional offset for pagination
 function loadContentViaAjax(id, windowContent, offset = 0) {
     if (windowContent.getAttribute('data-loading-in-progress') === 'true') {
         return;
@@ -60,7 +51,7 @@ function loadContentViaAjax(id, windowContent, offset = 0) {
     data.append('action', 'load_miniwindow_content');
     data.append('miniwindow_id', id);
     data.append('nonce', my_ajax_object.nonce);
-    data.append('offset', offset); // Include the offset parameter
+    data.append('offset', offset);
 
     fetch(my_ajax_object.ajaxurl, {
         method: 'POST',
@@ -91,10 +82,12 @@ function loadContentViaAjax(id, windowContent, offset = 0) {
     });
 }
 
-function fetchDataForMiniWindow(id, windowContent, miniWindow) {
+// Function to fetch data for specific mini-windows from an API endpoint
+function fetchDataForMiniWindow(id, windowContent, miniWindow) {console.log('fetching data for mini window');
     var apiUrl = '';
     var editPageUrl = '';
 
+    // Full switch statement with all cases
     switch (id) {
         case 'mini-window-edit-creature-parts':
             apiUrl = '/wp-json/frm/v2/forms/53/entries?page_size=10000';
@@ -133,29 +126,29 @@ function fetchDataForMiniWindow(id, windowContent, miniWindow) {
             editPageUrl = 'https://charmscheck.com/add-a-potion/?frm_action=edit&entry=';
             break;
         case 'mini-window-edit-named-creatures':
-            apiUrl='/wp-json/frm/v2/forms/170/entries?page_size=10000';
+            apiUrl = '/wp-json/frm/v2/forms/170/entries?page_size=10000';
             editPageUrl = 'https://charmscheck.com/enter-named-creature/?frm_action=edit&entry=';
-        break;
+            break;
         case 'mini-window-edit-creature-attack':
-            apiUrl='/wp-json/frm/v2/forms/51/entries?page_size=10000';
+            apiUrl = '/wp-json/frm/v2/forms/51/entries?page_size=10000';
             editPageUrl = 'https://charmscheck.com/add-creature-attack/?frm_action=edit&entry=';
-        break;
+            break;
         case 'mini-window-edit-creature-ability':
-            apiUrl='/wp-json/frm/v2/forms/51/entries?page_size=10000';
+            apiUrl = '/wp-json/frm/v2/forms/51/entries?page_size=10000';
             editPageUrl = 'https://charmscheck.com/add-creature-attack/?frm_action=edit&entry=';
-        break;
+            break;
         case 'mini-window-edit-plant-parts':
-            apiUrl='/wp-json/frm/v2/forms/43/entries?page_size=10000';
+            apiUrl = '/wp-json/frm/v2/forms/43/entries?page_size=10000';
             editPageUrl = 'https://charmscheck.com/plant-part-entry/?frm_action=edit&entry=';
-        break;
+            break;
         case 'mini-window-edit-named-plants':
-            apiUrl='/wp-json/frm/v2/forms/1042/entries?page_size=10000';
+            apiUrl = '/wp-json/frm/v2/forms/1042/entries?page_size=10000';
             editPageUrl = 'https://charmscheck.com/add-named-plant/?frm_action=edit&entry=';
-        break;
-
-
-
-
+            break;
+		case 'mini-window-edit-general-items':
+            apiUrl = '/wp-json/frm/v2/forms/126/entries?page_size=10000';
+            editPageUrl = 'https://charmscheck.com/add-general-items/?frm_action=edit&entry=';
+            break;
         default:
             windowContent.innerHTML = '<p>Invalid mini-window ID.</p>';
             return;
@@ -165,9 +158,9 @@ function fetchDataForMiniWindow(id, windowContent, miniWindow) {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'X-WP-Nonce': my_ajax_object.nonce // Use nonce for authentication
+            'X-WP-Nonce': my_ajax_object.nonce
         },
-        credentials: 'same-origin' // Include credentials in the request
+        credentials: 'same-origin'
     })
     .then(function(response) {
         if (!response.ok) {
@@ -181,39 +174,27 @@ function fetchDataForMiniWindow(id, windowContent, miniWindow) {
     .catch(function(error) {
         console.error('Error fetching data:', error);
         windowContent.innerHTML = '<p>Error loading content.</p>';
-        // Remove the 'data-content-loaded' attribute to allow retry
         miniWindow.removeAttribute('data-content-loaded');
     });
 }
 
-function displayDataInMiniWindow(data, windowContent, editPageUrl) {
-    // Clear existing content
-    windowContent.innerHTML = '';
+// domUtils.js
 
-    // Create a list element to hold the items
-    var list = document.createElement('ul');
-    list.className = 'edit-item-list';
 
-    // Iterate over the data and create list items
-    Object.values(data).forEach(function(entry) {
-        var itemName = entry.meta.creaturepartname || entry.meta.creaturename || entry.meta.plantname || entry.meta.prepname || entry.meta['1nyqa13'] || entry.meta.fy85e || entry.meta.itemname || entry.meta.bookname || entry.meta.potionname || entry.meta.namedcreaturesname || entry.meta.creatureattackname || entry.meta.creatureabilityname || entry.meta.plantpartname || entry.meta.namedplantname || 'Unnamed Item';
-        var itemId = entry.id;
 
-        // Create a list item with a link
-        var listItem = document.createElement('li');
-        var link = document.createElement('a');
-        link.href = editPageUrl + itemId;
-        link.target = '_blank';
-        link.textContent = itemName;
-        listItem.appendChild(link);
-
-        // Append the list item to the list
-        list.appendChild(listItem);
-    });
-
-    // Append the list to the window content
-    windowContent.appendChild(list);
+// Utility functions for class manipulation
+function addClass(element, className) {
+    if (!element.classList.contains(className)) {
+        element.classList.add(className);
+    }
 }
+
+function removeClass(element, className) {
+    if (element.classList.contains(className)) {
+        element.classList.remove(className);
+    }
+}
+
 
 document.addEventListener('DOMContentLoaded', function() {
     // Handle left panel menu item clicks
@@ -247,15 +228,50 @@ document.addEventListener('DOMContentLoaded', function() {
     showMainWindow('main-window-creatures');
 });
 
-function refreshMiniWindow(id) {
-    var miniWindow = document.getElementById(id);
+const addWindows = [
+    'mini-window-add-creature-part',
+    'mini-window-add-creature',
+    'mini-window-add-named-creature',
+    'mini-window-add-creature-attack',
+    'mini-window-add-creature-ability',
+    'mini-window-add-plant-part',
+    'mini-window-add-plant',
+    'mini-window-add-named-plant',
+    'mini-window-add-preparation',
+    'mini-window-add-spell',
+    'mini-window-add-proficiency',
+    'mini-window-add-item',
+	'mini-window-add-general-item',
+    'mini-window-add-book',
+    'mini-window-add-potion'
+];
+
+function loadMiniWindowContent(id, offset = 0) {console.log('running loadminiwindowcontent');
+    // Hide all mini-windows
+    hideAllMiniWindows();
+
+    // Show the target mini-window
+    var miniWindow = document.getElementById(id);console.log(miniWindow);
     if (miniWindow) {
-        // Reload the content
+        miniWindow.classList.remove('hidden');
         var windowContent = miniWindow.querySelector('.window-content');
-        windowContent.innerHTML = '<p>Loading...</p>';
-        // Remove the 'data-content-loaded' attribute to force reload
-        miniWindow.removeAttribute('data-content-loaded');
-        // Reload content
-        loadMiniWindowContent(id);
+
+        // For other mini-windows, show a loading message if starting from offset 0
+        if (offset === 0) {
+            windowContent.innerHTML = '<p>Loading...</p>';
+        }
+
+        // Check if content is already loaded
+        if (!miniWindow.getAttribute('data-content-loaded')) {
+            // Determine if this is an "Edit" mini-window
+            if (id.startsWith('mini-window-edit-')) {
+                // Fetch data from the API
+                fetchDataForMiniWindow(id, windowContent, miniWindow);
+            } else {
+                // Load content via AJAX (original functionality)
+                loadContentViaAjax(id, windowContent, offset);
+            }
+            miniWindow.setAttribute('data-content-loaded', 'true');
+        }
     }
 }
