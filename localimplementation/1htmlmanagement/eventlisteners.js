@@ -20,20 +20,6 @@ function attachLeftPanelListeners() {
     }
     mainWindow.classList.remove('hidden');
   }
-  
-  function handleActionClick(formObj, mainWindow) {
-    console.log(`[Main] "${formObj.label}" button clicked in "${formObj.category}".`);
-    hideAllMiniWindows(mainWindow);
-    const miniId = formObj.miniwindowid;
-    let miniWindow = mainWindow.querySelector(`#mini-window-${miniId}`);
-    console.log(miniWindow);
-    if (!miniWindow) {
-      const miniWindowTemplate = document.getElementById('mini-window-template');
-      miniWindow = createMiniWindowFromForm(formObj, miniWindowTemplate, mainWindow);
-    }
-    miniWindow.classList.remove('hidden');
-  }
-  
 
   function handleActionClickFromForm(formObj, mainWindow, type) {
     console.log(`[Main] "${type} ${formObj.label}" button clicked in "${formObj.category}".`);
@@ -45,4 +31,16 @@ function attachLeftPanelListeners() {
       miniWindow = createMiniWindowFromFormAndType(formObj, miniWindowTemplate, mainWindow, type);
     }
     miniWindow.classList.remove('hidden');
+    refreshFormConditionals(miniWindow);
+  }
+
+  function attachRefreshListener(refreshButton, miniWindow, formObj) {
+    if (!refreshButton) {
+      console.error("No refresh button provided.");
+      return;
+    }
+    refreshButton.addEventListener('click', () => {
+      console.log("Refresh button actuated. Reloading form...");
+      reloadWholeForm(miniWindow, formObj);
+    });
   }
