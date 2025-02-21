@@ -57,21 +57,16 @@ function createMiniWindowFromFormAndType(formObj, template, mainWindow, type) {
   windowContent.innerHTML = ''; // Clear previous content
 
   if (type === 'add') {
-    // For add windows, embed the form using a script with the standardized key.
-    const embedUrl = `https://charmscheck.com/frm_embed/${formObj.key}`;
-    console.log(`[WindowManager] Embed URL (add): ${embedUrl}`);
-    const embedScript = document.createElement('script');
-    embedScript.src = embedUrl;
-    embedScript.defer = true;
+    // For add windows, embed the form via an iframe.
+    const iframe = makeiframe(formObj.key);
+    windowContent.appendChild(iframe);
 
     const refreshButton = miniWindow.querySelector('.refresh-button');
     attachRefreshListener(refreshButton, miniWindow, formObj);
-
-    windowContent.appendChild(embedScript);
   } else if (type === 'edit') {
     // For edit windows, perform an API call to fetch data.
     const apiUrl = `https://charmscheck.com/wp-json/frm/v2/forms/${formObj.id}/entries?page_size=10000`;
-    // Construct edit page URL using formObj.page
+    // Construct edit page URL using formObj.page.
     const editPageUrl = `https://charmscheck.com/${formObj.page}/?frm_action=edit&entry=`;
 
     const refreshButton = miniWindow.querySelector('.refresh-button');
@@ -93,3 +88,4 @@ function createMiniWindowFromFormAndType(formObj, template, mainWindow, type) {
   mainWindow.querySelector('.mini-windows').appendChild(miniWindow);
   return miniWindow;
 }
+

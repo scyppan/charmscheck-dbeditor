@@ -16,5 +16,3 @@ function initApp() {
       panel.appendChild(menuItem);
     });
   }
-  
-  

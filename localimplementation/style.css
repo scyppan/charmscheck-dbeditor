@@ -171,3 +171,13 @@ a:hover{
 .frm_forms.frm_style_formidable-style.with_frm_style {
     max-width: none !important; /* Remove the max-width restriction */
 }
+
+/* Style the iframe so that it blends into the page seamlessly */
+.form-iframe {
+    border: 0.25px solid #d3c8ab;
+    border-radius: 7px;
+    width: 100%;
+    min-height: 600px; /* Adjust as needed */
+    background: transparent;
+  }
+  

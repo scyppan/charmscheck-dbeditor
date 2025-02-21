@@ -8,14 +8,17 @@ function attachLeftPanelListeners() {
   function handleLeftMenuClick(event) {
     const category = event.currentTarget.getAttribute('data-target-window');
     console.log(`[Main] "${category}" menu item clicked.`);
+    
+    // Unload the current form by clearing the right panel.
+    const rightPanel = document.querySelector('.right-panel');
+    rightPanel.innerHTML = "";
+    
     hideAllMainWindows();
   
     let mainWindow = document.getElementById(category);
     if (!mainWindow) {
-      const rightPanel = document.querySelector('.right-panel');
       const mainWindowTemplate = document.getElementById('main-window-template');
       mainWindow = createMainWindow(category, mainWindowTemplate, rightPanel);
-      // Add action buttons from the global 'forms' array for this category.
       addActionButtonsFromForms(mainWindow, category);
     }
     mainWindow.classList.remove('hidden');
@@ -31,7 +34,6 @@ function attachLeftPanelListeners() {
       miniWindow = createMiniWindowFromFormAndType(formObj, miniWindowTemplate, mainWindow, type);
     }
     miniWindow.classList.remove('hidden');
-    refreshFormConditionals(miniWindow);
   }
 
   function attachRefreshListener(refreshButton, miniWindow, formObj) {
