@@ -1,3 +1,5 @@
+const propertiesarray=['d2934', 'generalitemname', 'creaturepartname', 'creaturename', 'plantname', 'prepname', 'spellname', 'proficiencyname', 'itemname', 'bookname', 'potionname', 'namedcreaturesname', 'creatureattackname', 'creatureabilityname', 'plantpartname', 'namedplantname'];
+
 // Revised global forms array – one object per form type
 const forms = [
     // Creatures
@@ -127,6 +129,15 @@ const forms = [
       id: 34,
       page: 'add-a-potion',
       label: "Potion"
+    },
+    //locations
+    {
+      category: "Locations",
+      form: "Locations",
+      key: "locations",
+      id: 104,
+      page: 'add-a-location',
+      label: "Location"
     }
   ];
   

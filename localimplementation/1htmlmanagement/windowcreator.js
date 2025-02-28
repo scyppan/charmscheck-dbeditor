@@ -17,7 +17,7 @@ function displayDataInMiniWindow(data, windowContent, editPageUrl) {
 
   Object.values(data).forEach(function (entry) {
     console.log(entry);
-    var properties = ['generalitemname', 'creaturepartname', 'creaturename', 'plantname', 'prepname', 'spellname', 'proficiencyname', 'itemname', 'bookname', 'potionname', 'namedcreaturesname', 'creatureattackname', 'creatureabilityname', 'plantpartname', 'namedplantname'];
+    var properties = propertiesarray; 
     var itemName = 'Unnamed Item';
 
     // Loop through possible properties until a valid one is found
