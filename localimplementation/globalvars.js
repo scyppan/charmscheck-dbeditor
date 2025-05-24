@@ -1,4 +1,4 @@
-const propertiesarray=['d2934', 'generalitemname', 'creaturepartname', 'creaturename', 'plantname', 'prepname', 'spellname', 'proficiencyname', 'itemname', 'bookname', 'potionname', 'namedcreaturesname', 'creatureattackname', 'creatureabilityname', 'plantpartname', 'namedplantname'];
+const propertiesarray=['locname', 'generalitemname', 'creaturepartname', 'creaturename', 'plantname', 'prepname', 'spellname', 'proficiencyname', 'itemname', 'bookname', 'potionname', 'namedcreaturesname', 'creatureattackname', 'creatureabilityname', 'plantpartname', 'namedplantname'];
 
 // Revised global forms array – one object per form type
 const forms = [
